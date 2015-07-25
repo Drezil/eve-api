@@ -23,6 +23,8 @@ import qualified Data.Text.Lazy as TL
 import qualified Data.ByteString.Lazy.Char8 as BL
 import Data.Text as T
 import Control.Exception
+import Data.Time
+import Data.Time.Clock
 
 import Debug.Trace as Debug
 
@@ -36,3 +38,6 @@ callAPIwithChar man k endpoint = do
     response <- httpLbs url man
     return . parseText def . TL.pack . BL.unpack . responseBody $ response
   `catch` (\e -> Debug.trace (show e) (return (Left e)))
+
+parseTime :: String -> Maybe UTCTime
+parseTime = parseTimeM True defaultTimeLocale "%F %X"

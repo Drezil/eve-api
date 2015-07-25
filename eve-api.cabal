@@ -28,6 +28,10 @@ library
         generic-deriving -any,
         bytestring -any,
         http-conduit -any,
-        safe -any
+        safe -any,
+        time -any
     default-language: Haskell2010
     extensions: OverloadedStrings DeriveGeneric TemplateHaskell
+    other-modules:
+        Eve.Api.Char.MarketOrders
+

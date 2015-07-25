@@ -76,3 +76,9 @@ instance Applicative QueryResult where
   (QueryResult f) <*> a = f <$> a
   HTTPError <*> _ = HTTPError
   ParseError <*> _ = ParseError
+
+mkComplete :: Int64 -> Text -> Int64 -> ApiComplete
+mkComplete k v c = ApiComplete (mkKey k v) (CharacterId c)
+
+mkKey :: Int64 -> Text -> ApiKey
+mkKey k v = ApiKey (VCode v) (KeyId k)
