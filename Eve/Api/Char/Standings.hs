@@ -53,9 +53,21 @@ getStandings man k = do
       Left _ -> return HTTPError
       Right xml ->
         case do
-               agent <- mapM getStanding (xml ^.. root . el "eveapi" ./ el "result" ./ el "characterNPCStandings" ./ el "rowset" . attributeIs "name" "agents" ./ el "row")
-               corp <- mapM getStanding (xml ^.. root . el "eveapi" ./ el "result" ./ el "characterNPCStandings" ./ el "rowset" . attributeIs "name" "NPCCorporations" ./ el "row")
-               faction <- mapM getStanding (xml ^.. root . el "eveapi" ./ el "result" ./ el "characterNPCStandings" ./ el "rowset" . attributeIs "name" "factions" ./ el "row")
+               agent   <- mapM getStanding (xml ^.. root .  el "eveapi"
+                                                         ./ el "result"
+                                                         ./ el "characterNPCStandings"
+                                                         ./ el "rowset" . attributeIs "name" "agents"
+                                                         ./ el "row")
+               corp    <- mapM getStanding (xml ^.. root .  el "eveapi"
+                                                         ./ el "result"
+                                                         ./ el "characterNPCStandings"
+                                                         ./ el "rowset" . attributeIs "name" "NPCCorporations"
+                                                         ./ el "row")
+               faction <- mapM getStanding (xml ^.. root .  el "eveapi"
+                                                         ./ el "result"
+                                                         ./ el "characterNPCStandings"
+                                                         ./ el "rowset" . attributeIs "name" "factions"
+                                                         ./ el "row")
                return (agent,corp,faction)
         of
           Nothing -> return ParseError
