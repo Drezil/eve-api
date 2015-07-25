@@ -13,24 +13,21 @@ extra-source-files:
     README.md
 
 library
+    exposed-modules:
+        Eve.Api.Char
+        Eve.Api.Types
+        Eve.Api.Internal
+        Eve.Api.Char.AccountBalance
     build-depends:
         base >=4.8 && <4.9,
         xml-lens -any,
         xml-conduit -any,
         HTTP -any,
-        text,
-        lens,
-        generic-deriving,
-        bytestring,
-        http-conduit,
-        safe
-
+        text -any,
+        lens -any,
+        generic-deriving -any,
+        bytestring -any,
+        http-conduit -any,
+        safe -any
     default-language: Haskell2010
-    exposed-modules:
-        Eve.Api.Char
-        Eve.Api.Types
-        Eve.Api.Internal
-    extensions: OverloadedStrings,
-                DeriveGeneric,
-                TemplateHaskell
-
+    extensions: OverloadedStrings DeriveGeneric TemplateHaskell
