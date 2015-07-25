@@ -18,6 +18,8 @@ library
         Eve.Api.Types
         Eve.Api.Internal
         Eve.Api.Char.AccountBalance
+        Eve.Api.Char.MarketOrders
+        Eve.Api.Char.Standings
     build-depends:
         base >=4.8 && <4.9,
         xml-lens -any,
@@ -32,6 +34,4 @@ library
         time -any
     default-language: Haskell2010
     extensions: OverloadedStrings DeriveGeneric TemplateHaskell
-    other-modules:
-        Eve.Api.Char.MarketOrders
 

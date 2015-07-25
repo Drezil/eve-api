@@ -53,7 +53,7 @@ getAccountBalance man k = do
           Just acc -> return . pure $ acc
 
 getAccount :: Element -> Maybe Account
-getAccount acc = Debug.trace (show acc) $
+getAccount acc =
   Account <$> (liftM unpack (acc ^. attribute "accountID") >>= readMay)
           <*> (liftM unpack (acc ^. attribute "accountKey") >>= readMay)
           <*> (liftM (P.filter (/= '.') . unpack) (acc ^. attribute "balance") >>= readMay)

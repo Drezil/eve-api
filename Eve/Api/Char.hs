@@ -16,6 +16,7 @@ module Eve.Api.Char (module Eve.Api.Char) where
 
 import Eve.Api.Char.AccountBalance as Eve.Api.Char
 import Eve.Api.Char.MarketOrders as Eve.Api.Char
+import Eve.Api.Char.Standings as Eve.Api.Char
 
 
 

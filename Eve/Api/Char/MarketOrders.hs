@@ -61,7 +61,7 @@ instance Enum Range where
   toEnum 20 = Jumps20
   toEnum 40 = Jumps40
   toEnum 32767 = Region
-  toEnum a = error ("Range: "++(show a))
+  toEnum a = error ("Range: "++show a)
 
   fromEnum Station = -1
   fromEnum SolarSystem = 0
@@ -108,7 +108,7 @@ getMarketOrders man k = do
           Just acc -> return . pure $ acc
 
 getOrder :: Element -> Maybe Order
-getOrder acc = Debug.trace (show acc) $
+getOrder acc =
   Order <$> (liftM unpack (acc ^. attribute "orderID") >>= readMay)
         <*> (liftM unpack (acc ^. attribute "charID") >>= readMay)
         <*> (liftM unpack (acc ^. attribute "stationID") >>= readMay)
