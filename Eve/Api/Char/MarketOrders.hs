@@ -22,14 +22,12 @@ module Eve.Api.Char.MarketOrders (
 
 import Control.Lens.TH
 import Control.Lens.Operators
-import Control.Monad
 import Data.Int
 import Data.Text as T
 import Data.Time.Clock
 import Network.HTTP.Conduit as HTTP
 import Prelude as P
 import Text.XML.Lens
-import Safe
 
 import Eve.Api.Types
 import Eve.Api.Internal
@@ -109,20 +107,18 @@ getMarketOrders man k = do
 
 getOrder :: Element -> Maybe Order
 getOrder acc =
-  Order <$> (liftM unpack (acc ^. attribute "orderID") >>= readMay)
-        <*> (liftM unpack (acc ^. attribute "charID") >>= readMay)
-        <*> (liftM unpack (acc ^. attribute "stationID") >>= readMay)
-        <*> (liftM unpack (acc ^. attribute "volEntered") >>= readMay)
-        <*> (liftM unpack (acc ^. attribute "volRemaining") >>= readMay)
-        <*> (liftM unpack (acc ^. attribute "minVolume") >>= readMay)
-        <*> (liftM unpack (acc ^. attribute "orderState") >>= readMay <&> toEnum)
-        <*> (liftM unpack (acc ^. attribute "typeID") >>= readMay)
-        <*> (liftM unpack (acc ^. attribute "range") >>= readMay <&> toEnum)
-        <*> (liftM unpack (acc ^. attribute "accountKey") >>= readMay)
-        <*> (liftM unpack (acc ^. attribute "duration") >>= readMay)
-        <*> (liftM (P.filter (/= '.') . unpack) (acc ^. attribute "escrow") >>= readMay)
-        <*> (liftM (P.filter (/= '.') . unpack) (acc ^. attribute "price") >>= readMay)
-        <*> (liftM unpack (acc ^. attribute "bid") >>= readMay <&> toEnum)
-        <*> (liftM unpack (acc ^. attribute "issued") >>= parseTime)
-         -- <&> == flip fmap, infixed
-
+  Order <$> getAttr     acc "orderID"
+        <*> getAttr     acc "charID"
+        <*> getAttr     acc "stationID"
+        <*> getAttr     acc "volEntered"
+        <*> getAttr     acc "volRemaining"
+        <*> getAttr     acc "minVolume"
+        <*> getAttrEnum acc "orderState"
+        <*> getAttr     acc "typeID"
+        <*> getAttrEnum acc "range"
+        <*> getAttr     acc "accountKey"
+        <*> getAttr     acc "duration"
+        <*> getAttrMod  acc (P.filter (/= '.')) "escrow"
+        <*> getAttrMod  acc (P.filter (/= '.')) "price"
+        <*> getAttrEnum acc "bid"
+        <*> getTime     acc "issued"
