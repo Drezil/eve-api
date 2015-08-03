@@ -54,6 +54,6 @@ getAccountBalance man k = do
 
 getAccount :: Element -> Maybe Account
 getAccount acc =
-  Account <$> (liftM unpack (acc ^. attribute "accountID") >>= readMay)
-          <*> (liftM unpack (acc ^. attribute "accountKey") >>= readMay)
-          <*> (liftM (P.filter (/= '.') . unpack) (acc ^. attribute "balance") >>= readMay)
+  Account <$> getAttr    acc                     "accountID"
+          <*> getAttr    acc                     "accountKey"
+          <*> getAttrMod acc (P.filter (/= '.')) "balance"
