@@ -16,8 +16,10 @@ module Eve.Api.Types where
 
 import Data.Int (Int64)
 import Data.Text
+import Data.Time
 import Control.Lens.Getter
 import Generics.Deriving hiding (to)
+import Data.Monoid
 
 
 data CharacterId = CharacterId
@@ -61,21 +63,15 @@ instance HasInfo ApiComplete where
 instance HasCharacter ApiComplete where
   charId = to _characterId
 
-data QueryResult a = QueryResult a
+data QueryResult a = QueryResult UTCTime a
                    | HTTPError
                    | ParseError
                    deriving (Show,Eq)
 
 instance Functor QueryResult where
-  fmap f (QueryResult a) = QueryResult (f a)
+  fmap f (QueryResult t a) = QueryResult t (f a)
   fmap _ HTTPError = HTTPError
   fmap _ ParseError  = ParseError
-
-instance Applicative QueryResult where
-  pure = QueryResult
-  (QueryResult f) <*> a = f <$> a
-  HTTPError <*> _ = HTTPError
-  ParseError <*> _ = ParseError
 
 mkComplete :: Int64 -> Text -> Int64 -> ApiComplete
 mkComplete k v c = ApiComplete (mkKey k v) (CharacterId c)

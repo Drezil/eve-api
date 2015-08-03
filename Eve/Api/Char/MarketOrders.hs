@@ -101,9 +101,13 @@ getMarketOrders man k = do
     case res of
       Left _ -> return HTTPError
       Right xml ->
-        case mapM getOrder (xml ^.. root . el "eveapi" ./ el "result" ./ el "rowset" ./ el "row") of
+        case do
+              o <- mapM getOrder (xml ^.. root . el "eveapi" ./ el "result" ./ el "rowset" ./ el "row")
+              t <- getCachedUntil xml
+              return (o,t)
+          of
           Nothing -> return ParseError
-          Just acc -> return . pure $ acc
+          Just (acc,t) -> return . QueryResult t $ acc
 
 getOrder :: Element -> Maybe Order
 getOrder acc =

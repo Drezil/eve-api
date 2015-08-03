@@ -41,12 +41,16 @@ getSkills man k = do
     case res of
       Left _ -> return HTTPError
       Right xml ->
-        case mapM getSkill (xml ^.. root .  el "eveapi"
-                                         ./ el "result"
-                                         ./ el "rowset" . attributeIs "name" "skills"
-                                         ./ el "row") of
+        case do
+               s <- mapM getSkill (xml ^.. root .  el "eveapi"
+                                                ./ el "result"
+                                                ./ el "rowset" . attributeIs "name" "skills"
+                                                ./ el "row")
+               t <- getCachedUntil xml
+               return (s,t)
+           of
           Nothing -> return ParseError
-          Just acc -> return . pure $ acc
+          Just (acc,t) -> return $ QueryResult t acc
 
 getSkill :: Element -> Maybe Skill
 getSkill acc =

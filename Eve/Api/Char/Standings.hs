@@ -68,10 +68,11 @@ getStandings man k = do
                                                          ./ el "characterNPCStandings"
                                                          ./ el "rowset" . attributeIs "name" "factions"
                                                          ./ el "row")
-               return (agent,corp,faction)
+               t <- getCachedUntil xml
+               return (agent,corp,faction,t)
         of
           Nothing -> return ParseError
-          Just ret -> return . pure $ ret
+          Just (a,c,f,t) -> return . QueryResult t $ (a,c,f)
 
 getStanding :: Element -> Maybe Standing
 getStanding acc = Debug.trace (show acc) $

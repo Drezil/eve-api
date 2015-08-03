@@ -48,9 +48,13 @@ getAccountBalance man k = do
     case res of
       Left _ -> return HTTPError
       Right xml ->
-        case headMay (xml ^.. root . el "eveapi" ./ el "result" ./ el "rowset" ./ el "row") >>= getAccount of
+        case do
+            b <- headMay (xml ^.. root . el "eveapi" ./ el "result" ./ el "rowset" ./ el "row") >>= getAccount
+            t <- getCachedUntil xml
+            return (b,t)
+          of
           Nothing -> return ParseError
-          Just acc -> return . pure $ acc
+          Just (acc,t) -> return . QueryResult t $ acc
 
 getAccount :: Element -> Maybe Account
 getAccount acc =

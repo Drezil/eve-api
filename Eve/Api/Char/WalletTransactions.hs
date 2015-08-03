@@ -87,14 +87,14 @@ getWalletTransactionsBackTo man k tid = getWalletTransactionsBackTo' man k tid N
                  Nothing -> getWalletTransactionsPart man k Nothing
                  Just a -> getWalletTransactionsPart man k (Just a)
         case res of
-          QueryResult l -> let (t1,l1,t2) = spanFind (\t -> _transactionId t > tid) l in
+          QueryResult t l -> let (t1,l1,t2) = spanFind (\t -> _transactionId t > tid) l in
                            case t2 of
                            [] -> do
                                  res' <- getWalletTransactionsBackTo' man k tid (Just $ _transactionId l1)
                                  case res' of
-                                   QueryResult l' -> return $ QueryResult (l ++ l')
+                                   QueryResult t' l' -> return $ QueryResult t (l ++ l')
                                    a -> return a
-                           _  -> return $ QueryResult t1
+                           _  -> return $ QueryResult t t1
           a -> return a
 
 
@@ -113,13 +113,16 @@ getWalletTransactionsPart man k tid = do
     case res of
       Left _ -> return HTTPError
       Right xml ->
-        case mapM getTransaction (xml ^.. root .  el "eveapi"
+        case do
+            t <- mapM getTransaction (xml ^.. root .  el "eveapi"
                                                ./ el "result"
                                                ./ el "rowset"
                                                ./ el "row")
+            t' <- getCachedUntil xml
+            return (t,t')
         of
           Nothing -> return ParseError
-          Just ret -> return . pure . sortByDescending compare $ ret
+          Just (ret,t) -> return . QueryResult t . sortByDescending compare $ ret
 
 
 

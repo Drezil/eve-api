@@ -65,6 +65,13 @@ getAttrEnum acc attr    = liftM unpack (acc ^. attribute attr) >>= readMay <&> t
 getTime                 :: ParseTime a => Element -> Name -> Maybe a
 getTime acc attr        = liftM unpack (acc ^. attribute attr) >>= Eve.Api.Internal.parseTime
 
+-- | Helper-Function to extract the cached-until out of an xml-tree
+getCachedUntil :: Document -> Maybe UTCTime
+getCachedUntil xml = headMay (xml ^.. root . el "eveapi" ./ el "currentTime") >>= extractTime
+    where
+      extractTime :: Element -> Maybe UTCTime
+      extractTime el = Eve.Api.Internal.parseTime . T.unpack $ el ^. text
+
 -- | Sorts in descending order
 sortByDescending :: (a -> a -> Ordering) -> [a] -> [a]
 sortByDescending cmp = sortBy (flip cmp)
