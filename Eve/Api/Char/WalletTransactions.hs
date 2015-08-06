@@ -87,6 +87,7 @@ getWalletTransactionsBackTo man k tid = getWalletTransactionsBackTo' man k tid N
                  Nothing -> getWalletTransactionsPart man k Nothing
                  Just a -> getWalletTransactionsPart man k (Just a)
         case res of
+          QueryResult t [] -> return $ QueryResult t []
           QueryResult t l -> let (t1,l1,t2) = spanFind (\t -> _transactionId t > tid) l in
                            case t2 of
                            [] -> do
