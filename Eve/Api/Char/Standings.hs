@@ -76,6 +76,6 @@ getStandings man k = do
 
 getStanding :: Element -> Maybe Standing
 getStanding acc = Debug.trace (show acc) $
-  Standing <$> (liftM unpack (acc ^. attribute "fromID") >>= readMay)
+  Standing <$> getAttr acc "fromID"
            <*> acc ^. attribute "fromName"
-           <*> (liftM unpack (acc ^. attribute "standing") >>= readMay)
+           <*> getAttr acc "standing"
