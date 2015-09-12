@@ -50,6 +50,7 @@ data Range = Station
            deriving (Eq)
 
 instance Show Range where
+  show Station = "Station"
   show SolarSystem = "Solar System"
   show Jumps5 = "5 Jumps"
   show Jumps10 = "10 Jumps"
