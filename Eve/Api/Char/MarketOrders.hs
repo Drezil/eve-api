@@ -32,8 +32,6 @@ import Text.XML.Lens
 import Eve.Api.Types
 import Eve.Api.Internal
 
-import Debug.Trace as Debug
-
 data OrderState = Open
                 | Closed
                 | Fulfilled
@@ -49,7 +47,15 @@ data Range = Station
            | Jumps20
            | Jumps40
            | Region
-           deriving (Show, Eq)
+           deriving (Eq)
+
+instance Show Range where
+  show SolarSystem = "Solar System"
+  show Jumps5 = "5 Jumps"
+  show Jumps10 = "10 Jumps"
+  show Jumps20 = "20 Jumps"
+  show Jumps40 = "40 Jumps"
+  show Region = "Region"
 
 instance Enum Range where
   toEnum (-1) = Station

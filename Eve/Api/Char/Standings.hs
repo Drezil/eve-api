@@ -34,8 +34,6 @@ import Safe
 import Eve.Api.Types
 import Eve.Api.Internal
 
-import Debug.Trace as Debug
-
 data Standing = Standing
               { _objectId :: Int64
               , _standingName :: Text
@@ -75,7 +73,7 @@ getStandings man k = do
           Just (a,c,f,t) -> return . QueryResult t $ (a,c,f)
 
 getStanding :: Element -> Maybe Standing
-getStanding acc = Debug.trace (show acc) $
+getStanding acc =
   Standing <$> getAttr acc "fromID"
            <*> acc ^. attribute "fromName"
            <*> getAttr acc "standing"

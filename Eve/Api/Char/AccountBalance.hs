@@ -32,8 +32,6 @@ import Safe
 import Eve.Api.Types
 import Eve.Api.Internal
 
-import Debug.Trace as Debug
-
 data Account = Account
              { _accountId :: Int64
              , _accountKey :: Int64

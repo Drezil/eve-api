@@ -30,8 +30,6 @@ import Safe
 import Eve.Api.Types
 import Eve.Api.Internal
 
-import Debug.Trace as Debug
-
 data Transaction = Transaction
               { _transactionDateTime :: UTCTime
               , _transactionId :: Int64
@@ -128,7 +126,7 @@ getWalletTransactionsPart man k tid = do
 
 
 getTransaction :: Element -> Maybe Transaction
-getTransaction acc = Debug.trace (show acc) $
+getTransaction acc =
   Transaction <$> getTime acc "transactionDateTime"
               <*> getAttr acc "transactionID"
               <*> getAttr acc "quantity"
