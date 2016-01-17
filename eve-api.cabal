@@ -34,5 +34,5 @@ library
         safe -any,
         time -any
     default-language: Haskell2010
-    extensions: OverloadedStrings DeriveGeneric TemplateHaskell
+    default-extensions: OverloadedStrings DeriveGeneric TemplateHaskell
 
