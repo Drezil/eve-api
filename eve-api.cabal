@@ -22,7 +22,7 @@ library
         Eve.Api.Char.Standings
         Eve.Api.Char.WalletTransactions
     build-depends:
-        base >=4.8 && <4.9,
+        base >=4.8,
         xml-lens -any,
         xml-conduit -any,
         HTTP -any,

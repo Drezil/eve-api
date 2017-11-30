@@ -40,8 +40,8 @@ callAPIwithCharExtra man k endpoint extra = do
     let KeyId key = k ^. keyId
         VCode code = k ^. vCode
         CharacterId cid = k ^. charId
-    url <- parseUrl $ "https://api.eveonline.com"++endpoint++"?keyID="++ show key ++"&vCode="++ T.unpack code ++"&characterID="++ show cid ++ extra
-    response <- httpLbs url man
+    req <- parseRequest $ "https://api.eveonline.com"++endpoint++"?keyID="++ show key ++"&vCode="++ T.unpack code ++"&characterID="++ show cid ++ extra
+    response <- httpLbs req man
     return . parseText def . TL.pack . BL.unpack . responseBody $ response
   `catch` (\e -> Debug.trace (show e) (return (Left e)))
 
